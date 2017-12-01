@@ -1,6 +1,17 @@
 from rest_framework.serializers import ModelSerializer
 
-from .models import Annotation, AnnotationType
+from .models import Annotation, AnnotationType, AnnotationFormat
+
+
+class AnnotationFormatSerializer(ModelSerializer):
+
+    class Meta:
+        model = AnnotationFormat
+        fields = (
+            'id',
+            'name',
+            'field',
+        )
 
 
 class AnnotationTypeSerializer(ModelSerializer):
@@ -9,7 +20,10 @@ class AnnotationTypeSerializer(ModelSerializer):
         fields = (
             'id',
             'name',
+            'format',
         )
+
+    annotation_format = AnnotationFormatSerializer(read_only=True)
 
 
 class AnnotationSerializer(ModelSerializer):

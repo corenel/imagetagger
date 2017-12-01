@@ -16,4 +16,13 @@ if [ "x$DJANGO_MANAGEPY_COLLECTSTATIC" = 'xon' ]; then
     python /imagetagger/imagetagger/manage.py collectstatic --noinput
 fi
 
+if [ "x$DJANGO_MANAGEPY_DUMPDATA" = 'xon' ]; then
+    python /imagetagger/imagetagger/manage.py dumpdata \
+        --exclude=base \
+        --exclude=images \
+        --exclude=users
+elif [ "x$DJANGO_MANAGEPY_LOADDATA" = 'xon' ]; then
+    python /imagetagger/imagetagger/manage.py loaddata --app annotations
+fi
+
 exec "$@"

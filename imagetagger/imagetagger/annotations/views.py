@@ -17,8 +17,9 @@ from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_2
     HTTP_403_FORBIDDEN
 
 from imagetagger.annotations.forms import ExportFormatCreationForm
-from imagetagger.annotations.models import Annotation, AnnotationType, Export, \
-    Verification, ExportFormat
+from imagetagger.annotations.models import (Annotation, AnnotationType,
+                                            AnnotationFormat, Export,
+                                            Verification, ExportFormat)
 from imagetagger.annotations.serializers import AnnotationSerializer
 from imagetagger.images.models import Image, ImageSet
 from imagetagger.users.models import Team
@@ -570,7 +571,9 @@ def create_annotation(request) -> Response:
             'detail': 'permission for annotating in this image set missing.',
         }, status=HTTP_403_FORBIDDEN)
 
-    if not Annotation.validate_vector(vector, Annotation.VECTOR_TYPE.BOUNDING_BOX):
+    if not Annotation.validate_vector(vector,
+                                      annotation_type,
+                                      Annotation.VECTOR_TYPE.BOUNDING_BOX):
         return Response({
             'detail': 'the vector is invalid.'
         }, status=HTTP_400_BAD_REQUEST)
@@ -641,7 +644,9 @@ def update_annotation(request) -> Response:
             'detail': 'permission for updating annotations in this image set missing.',
         }, status=HTTP_403_FORBIDDEN)
 
-    if not Annotation.validate_vector(vector, Annotation.VECTOR_TYPE.BOUNDING_BOX):
+    if not Annotation.validate_vector(vector,
+                                      annotation_type,
+                                      Annotation.VECTOR_TYPE.BOUNDING_BOX):
         return Response({
             'detail': 'the vector is invalid.'
         }, status=HTTP_400_BAD_REQUEST)

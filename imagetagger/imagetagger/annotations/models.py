@@ -6,7 +6,8 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.postgres.fields import JSONField
 from django.db import models, connection
-from django.db.models import Subquery, F, IntegerField, OuterRef, QuerySet, Count
+from django.db.models import (Subquery, F, IntegerField, OuterRef, QuerySet,
+                              Count)
 from django.db.models.functions import Coalesce
 
 from imagetagger.images.models import Image, ImageSet
@@ -230,13 +231,22 @@ class Annotation(models.Model):
         )
 
 
-class AnnotationType(models.Model):
+class AnnotationFormat(models.Model):
     name = models.CharField(max_length=20, unique=True)
+    field = JSONField(null=True)
     active = models.BooleanField(default=True)
 
     def __str__(self):
-        return u'AnnotationType: {0}'.format(self.name)
+        return u'AnnotationFormat: {0}'.format(self.name)
 
+class AnnotationType(models.Model):
+    name = models.CharField(max_length=20, unique=True)
+    active = models.BooleanField(default=True)
+    format = models.ForeignKey(
+        'AnnotationFormat', on_delete=models.PROTECT, related_name='types')
+
+    def __str__(self):
+        return u'AnnotationType: {0}'.format(self.name)
 
 class Export(models.Model):
     time = models.DateTimeField(auto_now_add=True)

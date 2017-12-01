@@ -10,11 +10,15 @@ services:
     image: postgres
     expose:
       - "5432"
+    ports:
+      - "5432:5432"
   web:
     environment:
       DATABASE_URL: postgres://imagetagger:imagetagger@db/imagetagger
       DJANGO_MANAGEPY_MIGRATE: "off"
       DJANGO_MANAGEPY_COLLECTSTATIC: "off"
+      DJANGO_MANAGEPY_DUMPDATA: "off"
+      DJANGO_MANAGEPY_LOADDATA: "off"
     build:
       context: .
       dockerfile: ./Dockerfile
