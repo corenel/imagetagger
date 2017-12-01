@@ -1,0 +1,44 @@
+[{
+    "model": "annotations.annotationformat",
+    "pk": 0,
+    "fields": {
+        "name": "bounding_box",
+        "field": {
+            "x1": "int",
+            "x2": "int",
+            "y1": "int",
+            "y2": "int"
+        },
+        "active": true
+    }
+}, {
+    "model": "annotations.annotationformat",
+    "pk": 1,
+    "fields": {
+        "name": "box_in_time_series",
+        "field": {
+            "id": "int",
+            "x1": "int",
+            "x2": "int",
+            "y1": "int",
+            "y2": "int"
+        },
+        "active": true
+    }
+}, {
+    "model": "annotations.annotationtype",
+    "pk": 0,
+    "fields": {
+        "name": "car",
+        "active": true,
+        "format": 0
+    }
+}, {
+    "model": "annotations.annotationtype",
+    "pk": 1,
+    "fields": {
+        "name": "car_in_time_series",
+        "active": true,
+        "format": 1
+    }
+}]

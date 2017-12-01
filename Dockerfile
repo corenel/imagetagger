@@ -10,12 +10,11 @@ FROM python:3
 ENV PYTHONUNBUFFERED 1
 
 # create work directory
-RUN mkdir -p /imagetagger
-WORKDIR /imagetagger
+WORKDIR /srv
 
 # copy source code
-ADD . /imagetagger/
+ADD . /srv/
 
 RUN pip install -r requirements.txt
 
-ENTRYPOINT ["/imagetagger/docker-entrypoint.sh"]
+ENTRYPOINT ["/srv/docker-entrypoint.sh"]

@@ -9,20 +9,19 @@ set -e
 # >&2 echo "Postgres is up - continuing"
 
 if [ "x$DJANGO_MANAGEPY_MIGRATE" = 'xon' ]; then
-    python /imagetagger/imagetagger/manage.py migrate --noinput
+    python /srv/imagetagger/manage.py migrate --noinput
 fi
 
 if [ "x$DJANGO_MANAGEPY_COLLECTSTATIC" = 'xon' ]; then
-    python /imagetagger/imagetagger/manage.py collectstatic --noinput
+    python /srv/imagetagger/manage.py collectstatic --noinput
 fi
 
 if [ "x$DJANGO_MANAGEPY_DUMPDATA" = 'xon' ]; then
-    python /imagetagger/imagetagger/manage.py dumpdata \
-        --exclude=base \
-        --exclude=images \
-        --exclude=users
+    python /srv/imagetagger/manage.py \
+        dumpdata --format=json annotations \
+        > /srv/imagetagger/imagetagger/annotations/fixtures/initial_data.json
 elif [ "x$DJANGO_MANAGEPY_LOADDATA" = 'xon' ]; then
-    python /imagetagger/imagetagger/manage.py loaddata --app annotations
+    python /srv/imagetagger/manage.py loaddata --app annotations
 fi
 
 exec "$@"

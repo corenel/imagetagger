@@ -17,14 +17,14 @@ services:
       DATABASE_URL: postgres://imagetagger:imagetagger@db/imagetagger
       DJANGO_MANAGEPY_MIGRATE: "off"
       DJANGO_MANAGEPY_COLLECTSTATIC: "off"
-      DJANGO_MANAGEPY_DUMPDATA: "off"
+      DJANGO_MANAGEPY_DUMPDATA: "on"
       DJANGO_MANAGEPY_LOADDATA: "off"
     build:
       context: .
       dockerfile: ./Dockerfile
-    command: python3 /imagetagger/imagetagger/manage.py runserver 0.0.0.0:8080
+    command: python3 /srv/imagetagger/manage.py runserver 0.0.0.0:8080
     volumes:
-      - .:/imagetagger
+      - .:/srv
     ports:
       - "8080:8080"
     depends_on:
