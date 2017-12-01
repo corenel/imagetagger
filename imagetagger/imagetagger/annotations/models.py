@@ -200,6 +200,7 @@ class Annotation(models.Model):
 
     @staticmethod
     def validate_vector(vector: Union[dict, None],
+                        anno_type: 'AnnotationType',
                         vector_type: 'Annotation.VECTOR_TYPE') -> bool:
         """
         Validate a vector. Returns whether the vector is valid.

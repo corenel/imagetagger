@@ -23,8 +23,6 @@ class AnnotationTypeSerializer(ModelSerializer):
             'format',
         )
 
-    annotation_format = AnnotationFormatSerializer(read_only=True)
-
 
 class AnnotationSerializer(ModelSerializer):
     class Meta:
