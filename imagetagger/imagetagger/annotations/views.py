@@ -20,7 +20,8 @@ from imagetagger.annotations.forms import ExportFormatCreationForm
 from imagetagger.annotations.models import (Annotation, AnnotationType,
                                             AnnotationFormat, Export,
                                             Verification, ExportFormat)
-from imagetagger.annotations.serializers import AnnotationSerializer
+from imagetagger.annotations.serializers import (AnnotationSerializer,
+                                                 AnnotationFormatSerializer)
 from imagetagger.images.models import Image, ImageSet
 from imagetagger.users.models import Team
 
@@ -673,4 +674,21 @@ def update_annotation(request) -> Response:
             .order_by('annotation_type__name'), many=True)
     return Response({
         'annotations': serializer.data,
+    }, status=HTTP_200_OK)
+
+
+@login_required
+@api_view(['POST'])
+def get_annotation_format(request) -> Response:
+    try:
+        annotation_type_id = int(request.data['annotation_type_id'])
+    except (KeyError, TypeError, ValueError):
+        raise ParseError
+
+    annotation_type = get_object_or_404(AnnotationType, pk=annotation_type_id)
+    annotation_format = get_object_or_404(AnnotationFormat, pk=annotation_type.format.id)
+    serializer = AnnotationFormatSerializer(annotation_format)
+
+    return Response({
+        'annotations_format': serializer.data,
     }, status=HTTP_200_OK)

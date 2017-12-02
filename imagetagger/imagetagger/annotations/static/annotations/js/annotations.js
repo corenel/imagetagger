@@ -34,6 +34,15 @@
   }
 
   /**
+    * Parse AnnotationFormat and return corresponding anno vector
+    *
+    * @param annoFormat JSON-like annotation format
+    */
+  function parseAnnotationFormat (annoFormat) {
+    console.log(typeof annoFormat)
+  }
+
+  /**
    * Create an annotation using the form data from the current page.
    * If an annotation is currently edited, an update is triggered instead.
    *
