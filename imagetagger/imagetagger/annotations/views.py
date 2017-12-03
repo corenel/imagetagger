@@ -44,10 +44,10 @@ def annotate(request, image_id):
             try:
                 image = get_object_or_404(Image, id=request.POST['image_id'])
                 vector = {
-                    'x1': int(request.POST['x1Field']),
-                    'y1': int(request.POST['y1Field']),
-                    'x2': int(request.POST['x2Field']),
-                    'y2': int(request.POST['y2Field']),
+                    # 'x1': int(request.POST['x1Field']),
+                    # 'y1': int(request.POST['y1Field']),
+                    # 'x2': int(request.POST['x2Field']),
+                    # 'y2': int(request.POST['y2Field']),
                 }
                 if 'not_in_image' in request.POST:
                     vector = None
@@ -61,6 +61,7 @@ def annotate(request, image_id):
             else:
                 last_annotation_type_id = request.POST['selected_annotation_type']
                 annotation_type = get_object_or_404(AnnotationType, id=request.POST['selected_annotation_type'])
+                annotation_format = get_object_or_404(AnnotationFormat, id=annotation_type.format.id)
                 annotation = Annotation(
                     vector=vector, image=image, annotation_type=annotation_type,
                     user=request.user if request.user.is_authenticated() else None)
@@ -75,6 +76,7 @@ def annotate(request, image_id):
 
         set_images = selected_image.image_set.images.all()
         annotation_types = AnnotationType.objects.filter(active=True)  # for the dropdown option
+        annotation_formats = AnnotationFormat.objects.filter(active=True)  # for the dropdown option
 
         filtered = request.GET.get("selected_annotation_type")
         new_filter = request.GET.get("filter")
@@ -93,6 +95,7 @@ def annotate(request, image_id):
         # detecting next and last image in the set
         next_image = set_images.filter(id__gt=selected_image.id).order_by('id').first()
         last_image = set_images.filter(id__lt=selected_image.id).order_by('id').last()
+        vector_id = last_annotation_type_id if last_annotation_type_id != -1 else 0
 
         return render(request, 'annotations/annotate.html', {
             'selected_image': selected_image,
@@ -100,16 +103,13 @@ def annotate(request, image_id):
             'last_image': last_image,
             'set_images': set_images,
             'annotation_types': annotation_types,
+            'annotation_formats': annotation_formats,
             'image_annotations': Annotation.objects.filter(
                 image=selected_image).select_related(),
             'last_annotation_type_id': int(last_annotation_type_id),
-            'filtered' : filtered,
-            'vector_fields': (
-                'x1',
-                'x2',
-                'y1',
-                'y2',
-            ),
+            'filtered': filtered,
+            'vector_fields': annotation_formats[vector_id].field.keys(),
+            'vector_types': annotation_formats[vector_id].field.values(),
         })
     else:
         return redirect(reverse('images:view_imageset', args=(selected_image.image_set.id,)))

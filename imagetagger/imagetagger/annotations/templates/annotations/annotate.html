@@ -129,19 +129,7 @@
                           <label for='not_in_image'>Not in the image (g)</label>
                         </p>
                         <div class="row" id="coordinate_table">
-                          {% for field in vector_fields %}
-                            <div class="col-xs-2" style="max-width: 3em">
-                              <label for="{{ field }}Field">
-                                  {{ field }}
-                              </label>
-                            </div>
-                            <div class="col-xs-10">
-                                <input id="{{ field }}Field"
-                                       class="Coordinates annotation_value form-control"
-                                       type="number" name="{{ field }}Field" value="0" min="0">
-                            </div>
-                            <div class="col-xs-12"></div>
-                          {% endfor %}
+                            {% include "annotations/annotationvector.html" %}
                         </div>
                         <br>
                         <div class="row ">
