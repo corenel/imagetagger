@@ -44,6 +44,7 @@ def annotate(request, image_id):
             try:
                 image = get_object_or_404(Image, id=request.POST['image_id'])
                 vector = {
+                    'id': int(request.POST['idField']),
                     'x1': int(request.POST['x1Field']),
                     'y1': int(request.POST['y1Field']),
                     'x2': int(request.POST['x2Field']),
@@ -105,6 +106,7 @@ def annotate(request, image_id):
             'last_annotation_type_id': int(last_annotation_type_id),
             'filtered' : filtered,
             'vector_fields': (
+                'id',
                 'x1',
                 'x2',
                 'y1',
@@ -169,6 +171,7 @@ def edit_annotation_save(request, annotation_id):
                 annotation.image.image_set.has_perm('edit_annotation', request.user)):
         try:
             annotation.vector = {
+                'id': request.POST['idField'],
                 'x1': request.POST['x1Field'],
                 'y1': request.POST['y1Field'],
                 'x2': request.POST['x2Field'],
@@ -391,6 +394,7 @@ def export_format(export_format_name, imageset):
                             '%%type': annotation.annotation_type.name,
                             '%%veriamount': annotation.verification_difference,
                             # absolute values
+                            '%%id': annotation.vector['id'],
                             '%%x1': annotation.vector['x1'],
                             '%%x2': annotation.vector['x2'],
                             '%%y1': annotation.vector['y1'],
@@ -458,6 +462,7 @@ def export_format(export_format_name, imageset):
                     '%%type': annotation.annotation_type.name,
                     '%%veriamount': annotation.verification_difference,
                     # absolute values
+                    '%%id': annotation.vector['id'],
                     '%%x1': annotation.vector['x1'],
                     '%%x2': annotation.vector['x2'],
                     '%%y1': annotation.vector['y1'],
