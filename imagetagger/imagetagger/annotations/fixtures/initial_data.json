@@ -1,44 +1,23 @@
 [{
-    "model": "annotations.annotationformat",
-    "pk": 0,
-    "fields": {
-        "name": "bounding_box",
-        "field": {
-            "x1": "int",
-            "x2": "int",
-            "y1": "int",
-            "y2": "int"
-        },
-        "active": true
-    }
-}, {
-    "model": "annotations.annotationformat",
-    "pk": 1,
-    "fields": {
-        "name": "box_in_time_series",
-        "field": {
-            "id": "int",
-            "x1": "int",
-            "x2": "int",
-            "y1": "int",
-            "y2": "int"
-        },
-        "active": true
-    }
-}, {
     "model": "annotations.annotationtype",
     "pk": 0,
     "fields": {
         "name": "car",
-        "active": true,
-        "format": 0
+        "active": true
     }
 }, {
-    "model": "annotations.annotationtype",
+    "model": "annotations.exportformat",
     "pk": 1,
     "fields": {
-        "name": "car_in_time_series",
-        "active": true,
-        "format": 1
+        "name": "simple",
+        "team": 1,
+        "public": true,
+        "base_format": "%%content",
+        "image_format": "",
+        "annotation_format": "%%imagename|%%type|%%id|%%x1|%%y1|%%x2|%%y2",
+        "not_in_image_format": "%%imagename|%%type|none",
+        "min_verifications": 0,
+        "image_aggregation": false,
+        "annotations_types": [0]
     }
 }]

@@ -18,5 +18,4 @@ urlpatterns = [
     url(r'^api/annotation/delete/$', views.api_delete_annotation, name='delete_annotation'),
     url(r'^api/annotation/load/$', views.load_annotations, name='load_annotations'),
     url(r'^api/annotation/update/$', views.update_annotation, name='update_annotations'),
-    url(r'^api/annotation/format/$', views.get_annotation_format, name='get_annotation_format'),
 ]

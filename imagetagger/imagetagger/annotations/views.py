@@ -17,11 +17,9 @@ from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_2
     HTTP_403_FORBIDDEN
 
 from imagetagger.annotations.forms import ExportFormatCreationForm
-from imagetagger.annotations.models import (Annotation, AnnotationType,
-                                            AnnotationFormat, Export,
+from imagetagger.annotations.models import (Annotation, AnnotationType, Export,
                                             Verification, ExportFormat)
-from imagetagger.annotations.serializers import (AnnotationSerializer,
-                                                 AnnotationFormatSerializer)
+from imagetagger.annotations.serializers import AnnotationSerializer
 from imagetagger.images.models import Image, ImageSet
 from imagetagger.users.models import Team
 
@@ -682,18 +680,3 @@ def update_annotation(request) -> Response:
     }, status=HTTP_200_OK)
 
 
-@login_required
-@api_view(['POST'])
-def get_annotation_format(request) -> Response:
-    try:
-        annotation_type_id = int(request.data['annotation_type_id'])
-    except (KeyError, TypeError, ValueError):
-        raise ParseError
-
-    annotation_type = get_object_or_404(AnnotationType, pk=annotation_type_id)
-    annotation_format = get_object_or_404(AnnotationFormat, pk=annotation_type.format.id)
-    serializer = AnnotationFormatSerializer(annotation_format)
-
-    return Response({
-        'annotations_format': serializer.data,
-    }, status=HTTP_200_OK)

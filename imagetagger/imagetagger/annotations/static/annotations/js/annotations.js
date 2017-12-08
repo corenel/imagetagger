@@ -706,7 +706,6 @@
       show: true
     });
     gSelection.setSelection(
-      $('#idField').val(),
       Math.round($('#x1Field').val() / gImageScale),
       Math.round($('#y1Field').val() / gImageScale),
       Math.round($('#x2Field').val() / gImageScale),
@@ -743,7 +742,6 @@
       if (gRestoreSelection === null) {
         notInImage.prop('checked', true);
       } else {
-        $('#idField').val(gRestoreSelection.id);
         $('#x1Field').val(gRestoreSelection.x1);
         $('#x2Field').val(gRestoreSelection.x2);
         $('#y1Field').val(gRestoreSelection.y1);
@@ -779,7 +777,6 @@
    * @param selection
    */
   function updateAnnotationFields(img, selection) {
-    $('#idField').val(selection.id);
     $('#x1Field').val(Math.round(selection.x1 * gImageScale));
     $('#y1Field').val(Math.round(selection.y1 * gImageScale));
     $('#x2Field').val(Math.round(selection.x2 * gImageScale));

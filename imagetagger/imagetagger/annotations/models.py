@@ -232,20 +232,9 @@ class Annotation(models.Model):
         )
 
 
-class AnnotationFormat(models.Model):
-    name = models.CharField(max_length=20, unique=True)
-    field = JSONField(null=True)
-    active = models.BooleanField(default=True)
-
-    def __str__(self):
-        return u'AnnotationFormat: {0}'.format(self.name)
-
-
 class AnnotationType(models.Model):
     name = models.CharField(max_length=20, unique=True)
     active = models.BooleanField(default=True)
-    format = models.ForeignKey(
-        'AnnotationFormat', on_delete=models.PROTECT, related_name='types')
 
     def __str__(self):
         return u'AnnotationType: {0}'.format(self.name)
