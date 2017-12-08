@@ -696,6 +696,29 @@
   }
 
   /**
+   * Reload annotation vector.
+   */
+  function reloadAnnotationVector() {
+    var annotationTypeId = parseInt($('#annotation_type_id').val());
+    $.ajax(API_ANNOTATIONS_BASE_URL + 'annotation/format/', {
+      type: 'POST',
+      headers: gHeaders,
+      dataType: 'json',
+      data: JSON.stringify({
+        annotation_type_id: annotationTypeId
+      }),
+      success: function(data, textStatus, jqXHR) {
+        $('$coordinate_table').replaceWith(data)
+      },
+      error: function() {
+        // TODO: error for not getiting anno format
+        // $('.annotate_button').prop('disabled', false);
+        // displayFeedback($('#feedback_connection_error'));
+      }
+    });
+  }
+
+  /**
    * Reload the selection.
    */
   function reloadSelection() {
@@ -844,6 +867,7 @@
     $('select').on('change', function() {
       document.activeElement.blur();
     });
+    $('#annotation_type_id').on('change', reloadAnnotationVector);
 
     // register click events
     $('#cancel_edit_button').click(function() {

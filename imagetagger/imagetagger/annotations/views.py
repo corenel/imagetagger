@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.db import transaction
 from django.db.models import Q
 from django.http import HttpResponse, HttpResponseForbidden, HttpResponseBadRequest
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, render_to_response, get_object_or_404, redirect
 from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
 from rest_framework.decorators import api_view
@@ -246,6 +246,7 @@ def manage_annotations(request, image_set_id):
         'image_sets': imagesets,
         'annotations': annotations,
     })
+
 
 @login_required
 def verify(request, annotation_id):
@@ -552,8 +553,6 @@ def api_delete_annotation(request) -> Response:
     }, status=HTTP_200_OK)
 
 
-
-
 @login_required
 @api_view(['POST'])
 def create_annotation(request) -> Response:
@@ -687,8 +686,19 @@ def get_annotation_format(request) -> Response:
 
     annotation_type = get_object_or_404(AnnotationType, pk=annotation_type_id)
     annotation_format = get_object_or_404(AnnotationFormat, pk=annotation_type.format.id)
-    serializer = AnnotationFormatSerializer(annotation_format)
 
-    return Response({
-        'annotations_format': serializer.data,
-    }, status=HTTP_200_OK)
+    # return render(request, 'annotations/annotationvector.html', {
+    #     'vector_fields': annotation_format.field.keys(),
+    #     'vector_types': annotation_format.field.values(),
+    # })
+
+    # return Response({
+    #     'vector_fields': annotation_format.field.keys(),
+    #     'vector_types': annotation_format.field.values(),
+    # }, status=HTTP_200_OK)
+
+    return render_to_response(
+        'annotations/annotationvector.html', {
+            'vector_fields': annotation_format.field.keys(),
+            'vector_types': annotation_format.field.values(),
+        })
